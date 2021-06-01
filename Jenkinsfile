@@ -25,7 +25,7 @@ try{
         }
         stage('Generating UnitTest Report'){
             echo "Generating Report"
-            sh "${mavenCMD} surefire-report:report"
+            sh "${mavenCMD} surefire-report:report-only"
         } 
         stage('Sonar Scan'){
             echo "Scanning application for vulnerabilities..."
