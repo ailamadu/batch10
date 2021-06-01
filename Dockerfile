@@ -1,5 +1,5 @@
 FROM openjdk:11
 MAINTAINER "Madhu Aila"
-COPY target/my-test-app*.jar .
-CMD java -jar ./my-test-app*.jar
+COPY target/bootcamp*.jar .
+CMD java -jar ./bootcamp*.jar
 EXPOSE 8888
