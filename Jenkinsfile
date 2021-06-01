@@ -71,9 +71,10 @@ try{
 catch(Exception err){
     echo "Exception occured..."
     currentBuild.result="FAILURE"
-    if ${STAGE_NAME} == "git checkout"
+    if (${STAGE_NAME} == "git checkout"){
     //send an failure email notification to the user.
         echo "git checkout issue"
+    }
 }
 finally {
     (currentBuild.result!= "ABORTED") && node("master") {
