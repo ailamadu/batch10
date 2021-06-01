@@ -68,12 +68,12 @@ try{
 catch(Exception err){
     echo "Exception occured..."
     currentBuild.result="FAILURE"
-    mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) Failed", body: "Hi Team, \n\n Please go to ${BUILD_URL} and verify the cause for the build failure. \n $err  \n\n Regards, \n DevOps Team "
+    mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed", body: "Hi Team, \n\n Please go to ${BUILD_URL} and verify the cause for the build failure. \n <b> $err  </b>\n\n Regards, \n DevOps Team "
     throw err
 }
 finally {
-    (currentBuild.result!= "ABORTED") && node("master") {
-echo "finally gets executed and end an email notification for every build"
-mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) status", body: "Please go to ${BUILD_URL} and verify the build"
+    (currentBuild.result!= "ABORTED") && node("master") && (currentBuild.result!= "FAILURE"){
+    echo "finally gets executed and end an email notification for every build"
+    mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is Success", body: "Hi Team, \n\n Please go to ${BUILD_URL} and verify the success logs. \n\n Regards, \n DevOps Team "
     }
 }
