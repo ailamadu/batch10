@@ -1,23 +1,35 @@
-try{
-    node("master"){
+node{
         def mavenHome
         def mavenCMD
         def docker
         def dockerCMD
         def tagName = "1.0"
-        
+
         stage('Preparation of Jenkins'){
-            echo "Setting up the Jenkins environment..."
-            mavenHome = tool name: 'maven', type: 'maven'
-            mavenCMD = "${mavenHome}/bin/mvn"
-            docker = tool name: 'docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
-            dockerCMD = "$docker/bin/docker"
+            try{
+                echo "Setting up the Jenkins environment..."
+                mavenHome = tool name: 'maven', type: 'maven'
+                mavenCMD = "${mavenHome}/bin/mvn"
+                docker = tool name: 'docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
+                dockerCMD = "$docker/bin/docker"
+            }
+            catch(Exception err){
+                echo "Exception occured during Preparation Of Jenkins step..."
+                currentBuild.result="FAILURE"
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step Preparation Of Jenkins", body: "Hi Team, \n\n Please go to ${BUILD_URL} and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
+            }            
         }
 
        stage('git checkout'){
-            echo "Checking out the code from git repository..."
-            git 'https://github.com/ailamadu/batch10.git'
-        }
+           try{
+                echo "Checking out the code from git repository..."
+                git 'https://github.com/ailamadu/batch10.git'
+            }
+            catch(Exception err){
+                echo "Exception occured during git checkout step..."
+                currentBuild.result="FAILURE"
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step git checkout", body: "Hi Team, \n\n Please go to ${BUILD_URL} and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
+            }
 
         stage('Build, Test and Package'){
             echo "Building the application..."
@@ -60,16 +72,5 @@ try{
             echo "Clean the Jenkin Pipeline's workspace..."
             cleanWs()
         }
-    }
-}
-catch(Exception err){
-    echo "Exception occured..."
-    currentBuild.result="FAILURE"
-    mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed", body: "Hi Team, \n\n Please go to ${BUILD_URL} and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
-}
-finally {
-    (currentBuild.result!= "ABORTED") && node("master") && (currentBuild.result!= "FAILURE") {
-    echo "finally gets executed and sends an email notification for every successful Build"
-    mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is Success", body: "Hi Team, \n\n Please go to ${BUILD_URL} and verify the success logs. \n\n Regards, \n DevOps Team "
-    }
+     }
 }
