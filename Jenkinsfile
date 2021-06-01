@@ -1,5 +1,5 @@
-node('master'){
-    try{
+try{
+    node('master'){
         def mavenHome
         def mavenCMD
         def docker
@@ -63,6 +63,7 @@ node('master'){
             cleanWs()
         }
     }
+}
 catch(Exception err){
     echo "Exception occured..."
     currentBuild.result="FAILURE"
@@ -73,5 +74,4 @@ finally {
     echo "finally gets executed and sends an email notification for every successful Build"
     mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is Success", body: "Hi Team, \n\n Please go to ${BUILD_URL} and verify the success logs. \n\n Regards, \n DevOps Team "
     }
-}
 }
