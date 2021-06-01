@@ -21,7 +21,8 @@ try{
         
         stage('Build, Test and Package'){
             echo "Building the application..."
-            sh "${mavenCMD} clean test package"
+            sh "${mavenCMD} clean test"
+            sh "${mavenCMD} clean package"
         }
         
         stage('Sonar Scan'){
