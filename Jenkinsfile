@@ -69,7 +69,7 @@ catch(Exception err){
     echo "Exception occured..."
     echo "${stageName}"
     currentBuild.result="FAILURE"
-    if (${stageName} == "git checkout"){
+    if ("${stageName}" == "git checkout"){
     //send an failure email notification to the user.
         echo "git checkout issue"
     }
