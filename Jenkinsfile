@@ -9,7 +9,7 @@ try{
         
         stage('Preparation of Jenkins'){
             echo "Setting up the Jenkins environment..."
-            stageName="Preparation of Jenkins"`
+            stageName="Preparation of Jenkins"
             mavenHome = tool name: 'maven', type: 'maven'
             mavenCMD = "${mavenHome}/bin/mvn"
             docker = tool name: 'docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
