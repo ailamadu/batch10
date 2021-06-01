@@ -5,10 +5,9 @@ try{
         def docker
         def dockerCMD
         def tagName = "1.0"
-        def stageName
+        
         stage('Preparation of Jenkins'){
             echo "Setting up the Jenkins environment..."
-            stageName="Preparation of Jenkins"
             mavenHome = tool name: 'maven', type: 'maven'
             mavenCMD = "${mavenHome}/bin/mvn"
             docker = tool name: 'docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
@@ -17,7 +16,6 @@ try{
 
        stage('git checkout'){
             echo "Checking out the code from git repository..."
-            stageName="git checkout"
             git 'https://github.com/ailamadu/batch10.git'
         }
 
