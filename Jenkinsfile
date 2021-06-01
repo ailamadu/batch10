@@ -69,7 +69,6 @@ catch(Exception err){
     echo "Exception occured..."
     currentBuild.result="FAILURE"
     mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed", body: "Hi Team, \n\n Please go to ${BUILD_URL} and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
-    throw err
 }
 finally {
     (currentBuild.result!= "ABORTED") && node("master") && (currentBuild.result!= "FAILURE"){
