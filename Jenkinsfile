@@ -18,7 +18,7 @@ try{
        stage('git checkout'){
             echo "Checking out the code from git repository..."
             stageName="git checkout"
-            git 'https://github.com/ailamadu1/batch10.git'
+            git 'https://github.com/ailamadu/batch10.git'
         }
 
         stage('Build, Test and Package'){
