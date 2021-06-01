@@ -7,7 +7,7 @@ try{
         def tagName = "1.0"
         
         stage('Preparation of Jenkins'){
-            echo "Preparing the Jenkins environment with required tools..."
+            echo "Setting up the Jenkins environment..."
             mavenHome = tool name: 'maven', type: 'maven'
             mavenCMD = "${mavenHome}/bin/mvn"
             docker = tool name: 'docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
@@ -15,8 +15,15 @@ try{
         }
         
         stage('git checkout'){
-            echo "Checking out the code from git repository..."
-            git 'https://github.com/ailamadu/batch10.git'
+            try{
+                echo "Checking out the code from git repository..."
+                git 'https://github.com/ailamadu1/batch10.git'
+            }
+            catch(Exception err){
+                echo "Exception occured..."
+                currentBuild.result="FAILURE"
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) Failed at Git Checkout", body: "Hi Team, \n Please go to ${BUILD_URL} and verify the cause for the build failure. \n Regards, \n DevOps Team "
+            }
         }
         
         stage('Build, Test and Package'){
@@ -28,7 +35,7 @@ try{
             sh "${mavenCMD} surefire-report:report-only"
         } 
         stage('Sonar Scan'){
-            echo "Scanning application for vulnerabilities..."
+            echo "Scanning application for vulnerabilities using Sonar..."
             sh "${mavenCMD} sonar:sonar -Dsonar.host.url=http://34.122.103.162:9000  -Dsonar.login=03c8b31da2e09c29b8eb5078385d4eeff321735d"
         }
         
@@ -50,16 +57,14 @@ try{
             }
         }
         
-        stage('Deploy Application'){
-            echo "Installing desired software.."
-            echo "Bring docker service up and running"
-            echo "Deploying addressbook application"
+        stage('Deploy Application using Ansible'){
+            echo "Deploying the applicaiton using Ansible Playbook.."
             ansiblePlaybook credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: 'deploy-playbook.yml' , extras: '-u ubuntu'
         }
         
-        stage('Clean up'){
-            echo "Cleaning up the workspace..."
-        //    cleanWs()
+        stage('Workspace Cleanup'){
+            echo "Clean the Jenkin Pipeline's workspace..."
+            cleanWs()
         }
     }
 }
@@ -75,4 +80,3 @@ finally {
     }
     
 }
-0
