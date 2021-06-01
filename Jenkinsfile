@@ -9,7 +9,8 @@ try{
         
         stage('Preparation of Jenkins'){
             echo "Setting up the Jenkins environment..."
-            stageName="Preparation of Jenkins"
+            environment{  stageName="Preparation of Jenkins"
+        }
             mavenHome = tool name: 'maven', type: 'maven'
             mavenCMD = "${mavenHome}/bin/mvn"
             docker = tool name: 'docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
@@ -18,7 +19,8 @@ try{
         
         stage('git checkout'){
             echo "Checking out the code from git repository..."
-	    stageName="git checkout"
+            environment{  stageName="git checkout"
+        }
             git 'https://github.com/ailamadu1/batch10.git'
            //mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) Failed at Git Checkout", body: "Hi Team, \n Please go to ${BUILD_URL} and verify the cause for the build failure. \n Regards, \n DevOps Team "
         }
@@ -67,9 +69,9 @@ try{
 }
 catch(Exception err){
     echo "Exception occured..."
-    echo "${stageName}"
+    echo env.stageName
     currentBuild.result="FAILURE"
-    if ("${stageName}" == "git checkout"){
+    if ( env.stageName == "git checkout"){
     //send an failure email notification to the user.
         echo "git checkout issue"
     }
