@@ -68,6 +68,7 @@ try{
 
 catch(Exception err){
     echo "Exception occured..."
+    throw err
     echo "${stageName}"
     currentBuild.result="FAILURE"
     if ( stageName == "git checkout"){
