@@ -1,4 +1,5 @@
-node{
+try{
+    node{
         def mavenHome
         def mavenCMD
         def docker
@@ -66,3 +67,18 @@ node{
             cleanWs()
         }
     }
+}
+catch(Exception err){
+    echo "Exception occured..."
+    currentBuild.result="FAILURE"
+    if ${STAGE_NAME} == "git checkout"
+    //send an failure email notification to the user.
+        echo "git checkout issue"
+}
+finally {
+    (currentBuild.result!= "ABORTED") && node("master") {
+        echo "finally gets executed and end an email notification for every build"
+        mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) status", body: "Please go to ${BUILD_URL} and verify the build"
+    }
+
+}
