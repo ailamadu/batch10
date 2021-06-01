@@ -21,18 +21,12 @@ try{
         
         stage('Build, Test and Package'){
             echo "Building the application..."
-            sh "${mavenCMD} clean test"
             sh "${mavenCMD} clean package"
         }
         
         stage('Sonar Scan'){
             echo "Scanning application for vulnerabilities..."
             sh "${mavenCMD} sonar:sonar -Dsonar.host.url=http://34.122.103.162:9000  -Dsonar.login=03c8b31da2e09c29b8eb5078385d4eeff321735d"
-        }
-        
-        stage('Integration test'){
-            echo "Executing Regression Test Suits..."
-            //appscan application: 'app-test', credentials: '5692724c-7a01-4125-82ff-ff4d2dcaf74c', name: 'testing', scanner: dynamic_analyzer(hasOptions: false, optimization: 'Fast', scanType: 'Staging', target: 'http://15.206.70.235:8080'), type: 'Dynamic Analyzer'
         }
         
         stage('publish report'){
