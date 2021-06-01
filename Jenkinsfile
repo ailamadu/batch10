@@ -6,7 +6,7 @@ try{
         def dockerCMD
         def tagName = "1.0"
         
-        stage('Preparation'){
+        stage('Preparation of Jenkins'){
             echo "Preparing the Jenkins environment with required tools..."
             mavenHome = tool name: 'maven', type: 'maven'
             mavenCMD = "${mavenHome}/bin/mvn"
@@ -20,8 +20,8 @@ try{
         }
         
         stage('Build, Test and Package'){
-            echo "Building the addressbook application..."
-            sh "${mavenCMD} clean package"
+            echo "Building the application..."
+            sh "${mavenCMD} clean test package"
         }
         
         stage('Sonar Scan'){
