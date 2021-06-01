@@ -22,7 +22,11 @@ try{
         stage('Build, Test and Package'){
             echo "Building the application..."
             sh "${mavenCMD} clean package"
+            sh "${mavenCMD} 
         }
+        stage('Generating UnitTest Report'){
+            echo "Generating Report"
+            sh "${mavenCMD} surefire-report:report"
         
         stage('Sonar Scan'){
             echo "Scanning application for vulnerabilities..."
@@ -31,7 +35,7 @@ try{
         
         stage('publish report'){
             echo " Publishing HTML report.."
-            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'target/site/', reportFiles: 'surefire-report.html', reportName: 'HTML Report', reportTitles: ''])
         }
         
         stage('Build Docker Image'){
