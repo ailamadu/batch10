@@ -15,15 +15,9 @@ try{
         }
         
         stage('git checkout'){
-            try{
                 echo "Checking out the code from git repository..."
                 git 'https://github.com/ailamadu1/batch10.git'
-            }
-            catch(Exception err){
-                echo "Exception occured..."
-                currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) Failed at Git Checkout", body: "Hi Team, \n Please go to ${BUILD_URL} and verify the cause for the build failure. \n Regards, \n DevOps Team "
-            }
+                //mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) Failed at Git Checkout", body: "Hi Team, \n Please go to ${BUILD_URL} and verify the cause for the build failure. \n Regards, \n DevOps Team "
         }
         
         stage('Build, Test and Package'){
