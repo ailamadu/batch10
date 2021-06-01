@@ -31,7 +31,7 @@ node{
                 echo "Exception occured during git checkout step..."
                 currentBuild.result="FAILURE"
                 mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step git checkout", body: "Hi Team, \n\n Please go to ${BUILD_URL} and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
-		sh exit(1)
+		sh 'exit 1'
             }
 
         stage('Build, Test and Package'){
