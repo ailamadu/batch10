@@ -1,5 +1,5 @@
 try{
-    node("masterr"){
+    node("master"){
         def mavenHome
         def mavenCMD
         def docker
