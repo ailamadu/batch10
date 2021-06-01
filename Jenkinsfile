@@ -1,4 +1,4 @@
-node{
+node('master'){
     try{
         def mavenHome
         def mavenCMD
