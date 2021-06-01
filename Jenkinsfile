@@ -1,6 +1,5 @@
 try{
     pipeline {
-        agent {
             node{
                 def mavenHome
                 def mavenCMD
@@ -71,7 +70,7 @@ try{
                 }
             }
         }
-    }
+    
 }
 catch(Exception err){
     echo "Exception occured..."
