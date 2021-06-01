@@ -22,12 +22,11 @@ try{
         stage('Build, Test and Package'){
             echo "Building the application..."
             sh "${mavenCMD} clean package"
-            sh "${mavenCMD} 
         }
         stage('Generating UnitTest Report'){
             echo "Generating Report"
             sh "${mavenCMD} surefire-report:report"
-        
+        } 
         stage('Sonar Scan'){
             echo "Scanning application for vulnerabilities..."
             sh "${mavenCMD} sonar:sonar -Dsonar.host.url=http://34.122.103.162:9000  -Dsonar.login=03c8b31da2e09c29b8eb5078385d4eeff321735d"
