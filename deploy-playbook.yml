@@ -1,43 +1,54 @@
 ---
-- hosts: all
-  become: true
-  tasks:
-  - name: install maven
-    apt:
-      pkg: maven
-      state: present
-    notify:
-    - run update
-  - name: install tomcat
-    apt:
-      pkg: tomcat9
-      state: present
-  - name: uninstall git
-    apt:
-      pkg: git
-      state: absent
-  - name: install docker
-    apt:
-      pkg: docker.io
-      state: present
-  - name: start docker service
-    service:
-      name: docker
-      state: started
-      enabled: true
-  
-  - name: Stop container if application is already running
-    command: docker stop casestudy
-    ignore_errors: yes
-    
-  - name: Remove container if exists
-    command: docker rm casestudy
-    ignore_errors: yes
-    
-  - name: Deploy application
-    command: docker run -it -d -p 8081:8888 --name casestudy ailamadu/casestudy:1.0
-  
-  handlers:
-  - name: run update
-    apt:
-      update_cache: yes
+  - name: Create EC2 Instance
+    hosts: localhost
+    tasks:
+    - name: launching AWS instance using Ansible
+      ec2:
+        key_name: Madhu44
+        instance_type: t2.micro
+        image:   ami-04bde106886a53080
+        region: ap-south-1
+        wait: yes
+        group: 'Madhu SG'
+        count: 1
+        vpc_subnet_id: subnet-6546af0e
+        assign_public_ip: yes
+      register: ec2
+
+    - debug: 
+        var: ec2.instances[0].public_ip
+
+    - name: Add EC2 to ansible Inventory
+      add_host:
+        hostname: ec2.instances[0].public_ip
+        groupname: slavenode
+        ansible_user: ubuntu
+      become: yes
+
+    - block
+        - name: run update
+            apt:
+            update_cache: yes
+
+        - name: install docker
+            apt:
+              pkg: docker.io
+              state: present
+        
+        - name: start docker service
+            service:
+              name: docker
+              state: started
+              enabled: true
+
+        - name: Stop container if application is already running
+          command: docker stop casestudy
+          ignore_errors: yes
+
+        - name: Remove container if exists
+          command: docker rm casestudy
+          ignore_errors: yes
+
+        - name: Deploy application
+          command: docker run -it -d -p 8081:8888 --name casestudy ailamadu/casestudy:1.0
+    delegate_to: ec2.instances[0].public_ip
