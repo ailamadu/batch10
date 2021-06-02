@@ -16,7 +16,7 @@ node{
             catch(Exception err){
                 echo "Exception occured during Preparation Of Jenkins step..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Preparation Of Jenkins", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Preparation Of Jenkins", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n Error:\n $err \n\n Regards, \n DevOps Team "
 		        throw err
             }            
         }
@@ -29,7 +29,7 @@ node{
             catch(Exception err){
                 echo "Exception occured during git checkout step..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - git checkout", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - git checkout", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n Error:\n $err \n\n Regards, \n DevOps Team "
                 throw err
             }
 
@@ -41,7 +41,7 @@ node{
             catch(Exception err){
                 echo "Exception occured during Build, Test and Package..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Build, Test and Package", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Build, Test and Package", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  Error:\n $err \n\n Regards, \n DevOps Team "
                 throw err
             }
         }
@@ -54,7 +54,7 @@ node{
             catch(Exception err){
                 echo "Exception occured during Generating UnitTest Report..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Generating UnitTest Report", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Generating UnitTest Report", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n Error:\n  $err \n\n Regards, \n DevOps Team "
                 throw err
             }
         } 
@@ -66,7 +66,7 @@ node{
             catch(Exception err){
                 echo "Exception occured during Sonar Scan..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Sonar Scan", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Sonar Scan", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n Error:\n $err \n\n Regards, \n DevOps Team "
                 throw err
             }           
         }
@@ -79,20 +79,20 @@ node{
             catch(Exception err){
                 echo "Exception occured during Publish Report..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Publish Report", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Publish Report", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  Error:\n $err \n\n Regards, \n DevOps Team "
                 throw err
             } 
         }
 
         stage('Build Docker Image'){
             try{
-                echo "Building docker image for addressbook application ..."
+                echo "Building docker image for application ..."
                 sh "${dockerCMD} build -t ailamadu/casestudy:${tagName} ."
             }
             catch(Exception err){
                 echo "Exception occured during Build Docker Image..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Build Docker Image", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Build Docker Image", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  Error:\n $err \n\n Regards, \n DevOps Team "
                 throw err
             } 
         }
@@ -108,7 +108,7 @@ node{
             catch(Exception err){
                 echo "Exception occured during Push Docker Image to Docker Registry..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Push Docker Image to Docker Registry", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Push Docker Image to Docker Registry", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  Error:\n $err \n\n Regards, \n DevOps Team "
                 throw err
             } 
         }
@@ -121,7 +121,7 @@ node{
             catch(Exception err){
                 echo "Exception occured during Deploy Application using Ansible..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Deploy Application using Ansible", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Deploy Application using Ansible", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n   Error:\n $err \n\n Regards, \n DevOps Team "
                 throw err
             }
         }
@@ -134,7 +134,7 @@ node{
             catch(Exception err){
                 echo "Exception occured during Workspace Cleanup..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Workspace Cleanup", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Workspace Cleanup", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  Error:\n $err \n\n Regards, \n DevOps Team "
                 throw err
             }
             finally{
