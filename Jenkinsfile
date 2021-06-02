@@ -139,7 +139,7 @@ node{
             }
             finally{
                 echo "Build is Completed"
-                mail attachLog: true, attachmentsPattern: 'generatedFile.txt', to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Completed Successfully", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details. \n\n Regards, \n DevOps Team "
+                emailext attachLog: true, attachmentsPattern: 'generatedFile.txt', to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Completed Successfully", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details. \n\n Regards, \n DevOps Team "
             }
         }
      }
