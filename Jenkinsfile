@@ -61,7 +61,7 @@ node{
         stage('Sonar Scan'){
             try{
                echo "Scanning application for vulnerabilities using Sonar..."
-                sh "${mavenCMD} sonar:sonar -Dsonar.host.url=http://34.122.103.162:9000  -Dsonar.login=03c8b31da2e09c29b8eb5078385d4eeff321735d"
+                sh "${mavenCMD} sonar:sonar -Dsonar.host.url=http://35.188.131.222:9000  -Dsonar.login=03c8b31da2e09c29b8eb5078385d4eeff321735d"
             }
             catch(Exception err){
                 echo "Exception occured during Sonar Scan..."
