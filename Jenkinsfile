@@ -101,7 +101,7 @@ node{
             try{
                 echo "Log into the dockerhub and Pushing image"
                 withCredentials([string(credentialsId: 'dockerpwd', variable: 'dockerhubPwd')]) {   
-                    sh ("${dockerCMD}" + login -u ailamadu -p ${dockerhubPwd}')
+                    sh ("${dockerCMD}" + ' login -u ailamadu -p ${dockerhubPwd}')
                     sh "${dockerCMD} push ailamadu/casestudy:${tagName}"
                 }
             }
