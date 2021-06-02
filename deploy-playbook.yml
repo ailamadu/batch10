@@ -1,6 +1,5 @@
 ---
-  - name: Create EC2 Instance
-    hosts: localhost
+  - hosts: localhost
     tasks:
     - name: launching AWS instance using Ansible
       ec2:
@@ -27,19 +26,19 @@
 
     - block:
         - name: run update
-            apt:
+          apt:
             update_cache: yes
 
         - name: install docker
-            apt:
-              pkg: docker.io
-              state: present
+          apt:
+            pkg: docker.io
+            state: present
         
         - name: start docker service
-            service:
-              name: docker
-              state: started
-              enabled: true
+          service:
+            name: docker
+            state: started
+            enabled: true
 
         - name: Stop container if application is already running
           command: docker stop casestudy
@@ -51,4 +50,4 @@
 
         - name: Deploy application
           command: docker run -it -d -p 8081:8888 --name casestudy ailamadu/casestudy:1.0
-    delegate_to: ec2.instances[0].public_ip
+      delegate_to: ec2.instances[0].public_ip
