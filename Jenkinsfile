@@ -41,23 +41,11 @@ node{
             catch(Exception err){
                 echo "Exception occured during Build, Test and Package..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Build, Test and Package", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  Error:\n $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Build, Test and Package", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n Error:\n $err \n\n Regards, \n DevOps Team "
                 throw err
             }
         }
     
-        stage('Generating UnitTest Report'){
-            try{
-                echo "Generating Report"
-                sh "${mavenCMD} surefire-report:report-only"
-            }
-            catch(Exception err){
-                echo "Exception occured during Generating UnitTest Report..."
-                currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Generating UnitTest Report", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n Error:\n  $err \n\n Regards, \n DevOps Team "
-                throw err
-            }
-        } 
         stage('Sonar Scan'){
             try{
                echo "Scanning application for vulnerabilities using Sonar..."
@@ -71,6 +59,19 @@ node{
             }           
         }
     
+        stage('Generating UnitTest Report'){
+            try{
+                echo "Generating Test Report"
+                sh "${mavenCMD} surefire-report:report-only"
+            }
+            catch(Exception err){
+                echo "Exception occured during Generating UnitTest Report..."
+                currentBuild.result="FAILURE"
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Generating UnitTest Report", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n Error:\n  $err \n\n Regards, \n DevOps Team "
+                throw err
+            }
+        }
+
         stage('Publish Report'){
             try{
                 echo " Publishing HTML report.."
@@ -79,7 +80,7 @@ node{
             catch(Exception err){
                 echo "Exception occured during Publish Report..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Publish Report", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  Error:\n $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Publish Report", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n Error:\n $err \n\n Regards, \n DevOps Team "
                 throw err
             } 
         }
@@ -92,12 +93,12 @@ node{
             catch(Exception err){
                 echo "Exception occured during Build Docker Image..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Build Docker Image", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  Error:\n $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Build Docker Image", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n Error:\n $err \n\n Regards, \n DevOps Team "
                 throw err
             } 
         }
     
-        stage("Push Docker Image to Docker Registry"){
+        stage("Log into the Dockerhub and Push Docker Image"){
             try{
                 echo "Log into the dockerhub and Pushing image"
                 withCredentials([string(credentialsId: 'dockerpwd', variable: 'dockerhubPwd')]) {   
@@ -106,22 +107,22 @@ node{
                 }
             }
             catch(Exception err){
-                echo "Exception occured during Push Docker Image to Docker Registry..."
+                echo "Exception occured during Log into the Dockerhub and Push Docker Image..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Push Docker Image to Docker Registry", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  Error:\n $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Log into the Dockerhub and Push Docker Image", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n Error:\n $err \n\n Regards, \n DevOps Team "
                 throw err
             } 
         }
     
-        stage('Deploy Application using Ansible'){
+        stage('Deploy EC2 and Application using Ansible'){
             try{
-                echo "Deploying the applicaiton using Ansible Playbook.."
+                echo "Deploying the EC2 Instance and applicaiton using Ansible Playbook.."
                 ansiblePlaybook credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: 'deploy-playbook.yml' , extras: '-u ubuntu'
             }
             catch(Exception err){
-                echo "Exception occured during Deploy Application using Ansible..."
+                echo "Exception occured during Deploy EC2 and Application using Ansible..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Deploy Application using Ansible", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n   Error:\n $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Deploy EC2 and Application using Ansible", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n Error:\n $err \n\n Regards, \n DevOps Team "
                 throw err
             }
         }
@@ -134,7 +135,7 @@ node{
             catch(Exception err){
                 echo "Exception occured during Workspace Cleanup..."
                 currentBuild.result="FAILURE"
-                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Workspace Cleanup", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n  Error:\n $err \n\n Regards, \n DevOps Team "
+                mail to: 'ailamadu@gmail.com', subject: "Job ${JOB_NAME} (${BUILD_NUMBER}) is  Failed at step - Workspace Cleanup", body: "Hi Team, \n\n Please go to ${BUILD_URL} for more details and verify the cause for the build failure. \n Error:\n $err \n\n Regards, \n DevOps Team "
                 throw err
             }
             finally{
