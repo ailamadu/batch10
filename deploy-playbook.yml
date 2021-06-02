@@ -25,7 +25,7 @@
         ansible_user: ubuntu
       become: yes
 
-    - block
+    - block:
         - name: run update
             apt:
             update_cache: yes
